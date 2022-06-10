@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "./ExpenseForm.css";
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
 
 
     // KEY points at the useState function, sets the initial value (in this instance an empty sting)
@@ -73,8 +73,9 @@ const ExpenseForm = () => {
            date: new Date(enteredDate),
         };
 
+        // Executes the saveExpenseDataHandler in NewExpense.js via props, passing it the expenseData object as an arg.
         // Uses the two-way binding on the form to set the input values back to empty strings
-        console.log(expenseData);
+        props.onSaveExpenseData(expenseData);
         setEnteredTitle('');
         setEnteredAmount('');
         setEnteredDate('');
