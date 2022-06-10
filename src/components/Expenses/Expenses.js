@@ -1,44 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
-import ExpensesFilter from './ExpensesFilter';
-import Card from '../UI/Card'
-import './Expenses.css';
+import ExpensesFilter from "./ExpensesFilter";
+import Card from "../UI/Card";
+import "./Expenses.css";
 
 const Expenses = (props) => {
+    // Sets the date dropdown with the filteredYear key, initialized as the 2020 string
+    const [filteredYear, setFilteredYear] = useState("2020");
 
-    const [selectedYear, setYearFilter] = useState('2022');
+    const filterChangeHandler = (selectedYear) => {
+        // when the onChange event is triggered on the date dropdown selector,
+        // Triggers the onChangeFilter function from ExpenseFilter.js,
+        // updating the selectedYear value with the setFilteredYear 'useState' function.
+        setFilteredYear(selectedYear);
+    };
 
-    const filterDate = inputYear => {
-        setYearFilter(selectedYear);
-    }
+    const filteredExpenses = props.items.filter(expense => {
+        // Stores the expense items in the filteredExpenses object that match the selected year
+        // Then passes them to the ExpenseItem component to be mapped in the browser.
+        return expense.date.getFullYear().toString() === filteredYear;
+    });
 
     return (
         <div>
             <Card className="expenses">
-                <ExpensesFilter selected={ selectedYear } onChangeDateFilter = { filterDate }/>
-                <ExpenseItem
-                    title={ props.items[0].title }
-                    amount={ props.items[0].amount }
-                    date={ props.items[0].date }
+                <ExpensesFilter
+                    selected={filteredYear}
+                    onChangeFilter={filterChangeHandler}
                 />
-                <ExpenseItem
-                    title={ props.items[1].title }
-                    amount={ props.items[1].amount }
-                    date={ props.items[1].date }
-                />
-                <ExpenseItem
-                    title={ props.items[2].title }
-                    amount={ props.items[2].amount }
-                    date={ props.items[2].date }
-                />
-                <ExpenseItem
-                    title={ props.items[3].title }
-                    amount={ props.items[3].amount }
-                    date={ props.items[3].date }
-                />
+                {filteredExpenses.map((expense) => (
+                    <ExpenseItem
+                        // Unique identifier is required for dynamic list rendering, preventing console errors.
+                        key={expense.id}
+                        title={expense.title}
+                        amount={expense.amount}
+                        date={expense.date}
+                    />
+                ))}
             </Card>
         </div>
     );
-}
+};
 
 export default Expenses;
