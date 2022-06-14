@@ -69,7 +69,7 @@ const ExpenseForm = (props) => {
         // Stores the input data together, using the Date method to parse the string value
         const expenseData = {
            title: enteredTitle,
-           amount: enteredAmount,
+           amount: +enteredAmount,
            date: new Date(enteredDate),
         };
 
